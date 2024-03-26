@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
                 sai = (struct sockaddr_in *) (p->ai_addr);
                 addr = ntohl(sai->sin_addr.s_addr);
                 if (laddr == addr)
-                    break;
+                    continue;
                 for (j = 3; j >= 0; j--)
                     printf("%lu%s", 0xff & (addr >> (j * 8)),
                            j > 0 ? "." : " ");
@@ -97,13 +97,13 @@ int main(int argc, char *argv[])
             }
 
             if (p->ai_canonname) {
-                puts(p->ai_canonname);
+               printf("%s\n", p->ai_canonname);
             } else {
                puts("");
             }
         }
 
-        puts("");
+        puts("%");
         freeaddrinfo(host);
     }
 
