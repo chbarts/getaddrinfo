@@ -67,8 +67,6 @@ int main(int argc, char *argv[])
         lv6addr = NULL;
 
         for (p = host; p != NULL; p = p->ai_next) {
-            if (p->ai_canonname)
-                puts(p->ai_canonname);
             switch (p->ai_addr->sa_family) {
             case AF_INET:      /* IPv4 */
                 sai = (struct sockaddr_in *) (p->ai_addr);
@@ -78,7 +76,7 @@ int main(int argc, char *argv[])
                 for (j = 3; j >= 0; j--)
                     printf("%lu%s", 0xff & (addr >> (j * 8)),
                            j > 0 ? "." : " ");
-                puts("");
+                printf("\t");
                 laddr = addr;
                 break;
             case AF_INET6:     /* IPv6 */
@@ -89,13 +87,19 @@ int main(int argc, char *argv[])
                 for (j = 0; j < 16; j += 2)
                     printf("%02x%02x%s", v6addr[j], v6addr[j + 1],
                            j < 14 ? ":" : " ");
-                puts("");
+                printf("\t");
                 lv6addr = v6addr;
                 break;
             default:           /* What? */
-                fprintf(stderr, "%s: bizarre sa_family on %s\n", argv[0],
-                        argv[i]);
+                fprintf(stderr, "%s: bizarre sa_family %u on %s\n", argv[0],
+                        (unsigned int) p->ai_addr->sa_family, argv[i]);
                 break;
+            }
+
+            if (p->ai_canonname) {
+                puts(p->ai_canonname);
+            } else {
+               puts("");
             }
         }
 
