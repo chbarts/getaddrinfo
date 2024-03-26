@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
                 sai6 = (struct sockaddr_in6 *) p->ai_addr;
                 v6addr = sai6->sin6_addr.s6_addr;
                 if (lv6addr && !v6cmp(lv6addr, v6addr))
-                    break;
+                    continue;
                 for (j = 0; j < 16; j += 2)
                     printf("%02x%02x%s", v6addr[j], v6addr[j + 1],
                            j < 14 ? ":" : " ");
